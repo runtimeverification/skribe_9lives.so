@@ -4,6 +4,7 @@
         feature = "contract-trading-mint",
         feature = "contract-trading-quotes",
         feature = "contract-trading-price",
+        feature = "contract-trading-skribe",
         // Normally unused!
         feature = "contract-trading-dumper",
         feature = "contract-trading-extras-admin"
@@ -34,6 +35,9 @@ pub use crate::contract_trading_dumper::user_entrypoint;
 
 #[cfg(feature = "contract-trading-extras-admin")]
 pub use crate::contract_trading_extras_admin::user_entrypoint;
+
+#[cfg(feature = "contract-trading-skribe")]
+pub use crate::contract_trading_skribe::user_entrypoint;
 
 pub use crate::storage_trading::StorageTrading;
 
