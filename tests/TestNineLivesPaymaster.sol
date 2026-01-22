@@ -30,9 +30,14 @@ contract TestNineLivesPaymaster is Test {
     address ivan;
     uint256 ivanPk;
 
-    bytes8 OUTCOME = bytes8(keccak256(abi.encodePacked(uint256(123))));
+    bytes8 OUTCOME;
 
     function setUp() external {
+        vm.deal(address(this), 0xffffffffffffffffffffffff);
+        vm.warp(1); // Skribe default is 0
+        vm.roll(1); // Skribe default is 0
+
+        OUTCOME = bytes8(keccak256(abi.encodePacked(uint256(123))));
         ERC20 = new TestERC20();
         vm.chainId(55244);
         P = new NineLivesPaymaster();
