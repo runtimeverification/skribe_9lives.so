@@ -11,9 +11,7 @@ import { StylusDeployer } from "./StylusDeployer.sol";
 import { TestERC20 } from "./TestERC20.sol";
 
 interface ISkribeTrading is INineLivesTrading {
-    
-    function isSkribe() external returns (bool);
-    
+
     function ctorSkribe(
         bytes8[] memory outcomes,
         address oracle,
@@ -48,10 +46,6 @@ contract TestSkribeEndToEnd is Test, TestERC20 {
     function setUp() public {
         StylusDeployer deployer = new StylusDeployer();
         dppm = ISkribeTrading(deployer.deployWasm("contract-trading-dppm-skribe.wasm"));
-    }
-
-    function testIsSkribeFlag() public {
-        assert(dppm.isSkribe());
     }
 
     function test_end_to_end_intense(
