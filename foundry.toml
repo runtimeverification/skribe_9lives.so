@@ -21,7 +21,8 @@ fs_permissions = [
 	{ access = "read", path = "contract-trading-dppm-extras.wasm"},
 	{ access = "read", path = "contract-trading-dppm-mint.wasm"},
 	{ access = "read", path = "contract-trading-dppm-price.wasm"},
-	{ access = "read", path = "contract-trading-dppm-quotes.wasm"}
+	{ access = "read", path = "contract-trading-dppm-quotes.wasm"},
+	{ access = "read", path = "contract-trading-dppm-skribe.wasm"}
 ]
 
 [lint]

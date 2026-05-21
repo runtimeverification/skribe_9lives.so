@@ -46,6 +46,9 @@ contract TestSkribeEndToEnd is Test, TestERC20 {
     function setUp() public {
         StylusDeployer deployer = new StylusDeployer();
         dppm = ISkribeTrading(deployer.deployWasm("contract-trading-dppm-skribe.wasm"));
+
+        // TestERC20 mints type(uint256).max for msg.sender. burn them
+        _burn(msg.sender, balanceOf(msg.sender));
     }
 
     function test_end_to_end_intense(
@@ -132,5 +135,50 @@ contract TestSkribeEndToEnd is Test, TestERC20 {
         uint256 retAmt = dppm.payoffSkribe(outcomeWinnerId, winningAmt, address(this));
 
         // vm.assertLe(retAmt, fusdcVested, "failed");
+    }
+
+    function test_regression_end_to_end_intense() external {
+        bytes8 outcomeId1 = bytes8(0xaf1c7b43e540f2aa);
+        bytes8 outcomeId2 = bytes8(0xece54662fea47391);
+        bool outcomeWinner = true;
+
+        uint256 timeStart = block.timestamp + 1;
+        uint256 timeEnding = timeStart + 100;
+        uint256 initLiq = 2e6;
+
+        _mint(address(this), type(uint256).max);
+        _transfer(address(this), address(dppm), initLiq);
+        _approve(address(this), address(dppm), type(uint256).max);
+
+        bytes8[] memory outcomes = new bytes8[](2);
+        outcomes[0] = outcomeId1;
+        outcomes[1] = outcomeId2;
+
+        dppm.ctorSkribe(
+            outcomes,
+            address(this),
+            uint64(timeStart),
+            uint64(timeEnding),
+            address(this),
+            false,
+            0,
+            0,
+            0,
+            0,
+            initLiq
+        );
+        vm.warp(timeStart);
+
+        // purchaseInt1 = ((50852, False),) → fusdcAmt = 50852 % 100000000000 + 1 = 50853, outcome = false (outcomeId2)
+        uint256 fusdcAmt = 50853;
+        uint256 share2Received = dppm.mintSkribe(outcomeId2, fusdcAmt, address(this));
+
+        bytes8 outcomeWinnerId = outcomeWinner ? outcomeId1 : outcomeId2;
+        uint256 winningAmt     = outcomeWinner ? 0 : share2Received;
+
+        vm.warp(block.timestamp + 3);
+        dppm.decideSkribe(outcomeWinnerId);
+
+        dppm.payoffSkribe(outcomeWinnerId, winningAmt, address(this));
     }
 }
