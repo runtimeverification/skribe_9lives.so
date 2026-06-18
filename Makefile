@@ -27,6 +27,7 @@ build: \
 	contract-trading-dppm-extras \
 	contract-trading-dppm-quotes \
 	contract-trading-dppm-price \
+	contract-trading-dppm-skribe \
 	contract-trading-amm-mint \
 	contract-trading-amm-extras \
 	contract-trading-amm-quotes \
@@ -52,6 +53,7 @@ contract-trading-dppm-mint: contract-trading-dppm-mint.wasm
 contract-trading-dppm-extras: contract-trading-dppm-extras.wasm
 contract-trading-dppm-quotes: contract-trading-dppm-quotes.wasm
 contract-trading-dppm-price: contract-trading-dppm-price.wasm
+contract-trading-dppm-skribe: contract-trading-dppm-skribe.wasm
 
 contract-trading-amm-mint: contract-trading-amm-mint.wasm
 contract-trading-amm-extras: contract-trading-amm-extras.wasm
@@ -87,6 +89,11 @@ contract-trading-dppm-extras.wasm: $(shell find src -type f -name '*.rs')
 contract-trading-dppm-quotes.wasm: $(shell find src -type f -name '*.rs')
 	@${CARGO_BUILD_STYLUS} contract-trading-quotes,trading-backend-dppm${CARGO_EXTRA_FEATURES}
 	@${RELEASE_WASM_POST} contract-trading-dppm-quotes.wasm
+
+contract-trading-dppm-skribe.wasm: $(shell find src -type f -name '*.rs')
+	@rm -f contract-trading-skribe.wasm
+	@${CARGO_BUILD_STYLUS} contract-trading-skribe,trading-backend-dppm${CARGO_EXTRA_FEATURES}
+	@${RELEASE_WASM_POST} contract-trading-dppm-skribe.wasm
 
 contract-trading-dppm-price.wasm: $(shell find src -type f -name '*.rs')
 	@${CARGO_BUILD_STYLUS} contract-trading-price,trading-backend-dppm${CARGO_EXTRA_FEATURES}

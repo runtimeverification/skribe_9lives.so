@@ -4,9 +4,9 @@ wasm-opt \
 	--dce \
 	--rse \
 	--signature-pruning \
-	--enable-bulk-memory \
 	--strip-debug \
 	--strip-producers \
+	--disable-bulk-memory \
 	-Oz target/wasm32-unknown-unknown/release/ninelives.wasm \
 	-o $1.wasm-opt
 

@@ -77,6 +77,7 @@ pub mod contract_trading_extras;
 pub mod contract_trading_mint;
 pub mod contract_trading_price;
 pub mod contract_trading_quotes;
+pub mod contract_trading_skribe;
 pub mod storage_trading;
 
 pub mod contract_lockup;
@@ -163,6 +164,7 @@ macro_rules! harness_dbg {
         feature = "contract-trading-mint",
         feature = "contract-trading-quotes",
         feature = "contract-trading-price",
+        feature = "contract-trading-skribe",
         feature = "contract-lockup",
         feature = "contract-infra-market",
         feature = "contract-beauty-contest",
